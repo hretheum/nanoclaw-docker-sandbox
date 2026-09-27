@@ -407,7 +407,8 @@ async function runQuery(
         'TeamCreate', 'TeamDelete', 'SendMessage',
         'TodoWrite', 'ToolSearch', 'Skill',
         'NotebookEdit',
-        'mcp__nanoclaw__*'
+        'mcp__nanoclaw__*',
+        'mcp__docmost__*'
       ],
       env: sdkEnv,
       permissionMode: 'bypassPermissions',
@@ -423,6 +424,16 @@ async function runQuery(
             NANOCLAW_IS_MAIN: containerInput.isMain ? '1' : '0',
           },
         },
+        ...(process.env.DOCMOST_GTW_API_KEY ? {
+          docmost: {
+            command: 'node',
+            args: [path.join(__dirname, 'docmost-mcp-server.js')],
+            env: {
+              DOCMOST_GTW_URL: process.env.DOCMOST_GTW_URL || 'http://host.docker.internal:8080',
+              DOCMOST_GTW_API_KEY: process.env.DOCMOST_GTW_API_KEY,
+            },
+          },
+        } : {}),
       },
       hooks: {
         PreCompact: [{ hooks: [createPreCompactHook(containerInput.assistantName)] }],

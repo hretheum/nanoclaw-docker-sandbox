@@ -26,6 +26,7 @@ import {
   stopContainer,
 } from './container-runtime.js';
 import { detectAuthMode } from './credential-proxy.js';
+import { readEnvFile } from './env.js';
 import { validateAdditionalMounts } from './mount-security.js';
 import { RegisteredGroup } from './types.js';
 
@@ -236,6 +237,15 @@ function buildContainerArgs(
     args.push('-e', 'ANTHROPIC_API_KEY=placeholder');
   } else {
     args.push('-e', 'CLAUDE_CODE_OAUTH_TOKEN=placeholder');
+  }
+
+  // Pass Docmost MCP credentials to container (if configured)
+  const docmostEnv = readEnvFile(['DOCMOST_GTW_URL', 'DOCMOST_GTW_API_KEY']);
+  if (docmostEnv.DOCMOST_GTW_API_KEY) {
+    args.push('-e', `DOCMOST_GTW_API_KEY=${docmostEnv.DOCMOST_GTW_API_KEY}`);
+    if (docmostEnv.DOCMOST_GTW_URL) {
+      args.push('-e', `DOCMOST_GTW_URL=${docmostEnv.DOCMOST_GTW_URL}`);
+    }
   }
 
   // Runtime-specific args for host gateway resolution

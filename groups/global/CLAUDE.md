@@ -47,6 +47,44 @@ When you learn something important:
 - Split files larger than 500 lines into folders
 - Keep an index in your memory for the files you create
 
+## Obsidian Vault
+
+You have access to the user's Obsidian vault via the Local REST API plugin.
+
+- **URL:** `https://host.docker.internal:27124`
+- **API Key:** `3fed117c4cfc8b1c4fcd1cc18e1128fd97b2a45d715a338662a74dd2bab6c0c5`
+- **Important:** Always use `curl -k` (skip TLS verification) — the server uses a self-signed certificate.
+
+Example commands:
+```bash
+# List all files
+curl -k -H "Authorization: Bearer 3fed117c4cfc8b1c4fcd1cc18e1128fd97b2a45d715a338662a74dd2bab6c0c5" https://host.docker.internal:27124/vault/
+
+# Read a note
+curl -k -H "Authorization: Bearer 3fed117c4cfc8b1c4fcd1cc18e1128fd97b2a45d715a338662a74dd2bab6c0c5" https://host.docker.internal:27124/vault/path/to/note.md
+
+# Search
+curl -k -H "Authorization: Bearer 3fed117c4cfc8b1c4fcd1cc18e1128fd97b2a45d715a338662a74dd2bab6c0c5" "https://host.docker.internal:27124/search/simple/?query=search+term"
+```
+
+## Docmost Wiki (MCP)
+
+You have access to the company's Docmost wiki via MCP tools (`mcp__docmost__*`). Use these to create, read, update, and manage wiki pages and spaces.
+
+Available tools:
+- `mcp__docmost__docmost_list_spaces` — list all spaces
+- `mcp__docmost__docmost_list_pages` — list pages in a space
+- `mcp__docmost__docmost_get_page` — get page metadata
+- `mcp__docmost__docmost_read_content` — read page content (markdown)
+- `mcp__docmost__docmost_create_page` — create a new page
+- `mcp__docmost__docmost_update_content` — update page content (in-place)
+- `mcp__docmost__docmost_update_page` — update page metadata (title, parent)
+- `mcp__docmost__docmost_delete_page` — delete a page
+- `mcp__docmost__docmost_get_comments` — list comments on a page
+- `mcp__docmost__docmost_add_comment` — add a comment to a page
+
+Use Docmost when the user asks to save something to the wiki, look up documentation, or manage company knowledge base content.
+
 ## Message Formatting
 
 NEVER use markdown. Only use WhatsApp/Telegram formatting:
